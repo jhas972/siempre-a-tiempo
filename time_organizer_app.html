@@ -1,0 +1,700 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TimeOrganizer</title>
+    <link rel="manifest" href="data:application/json;base64,eyJuYW1lIjoiVGltZU9yZ2FuaXplciIsInNob3J0X25hbWUiOiJUaW1lT3JnIiwic3RhcnRfdXJsIjoiLyIsImRpc3BsYXkiOiJzdGFuZGFsb25lIiwiYmFja2dyb3VuZF9jb2xvciI6IiMxZTI5M2IiLCJ0aGVtZV9jb2xvciI6IiMzYjgyZjYifQ==">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+
+        .container {
+            max-width: 400px;
+            margin: 0 auto;
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 30px;
+            padding: 20px 0;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 25px;
+            margin-bottom: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            backdrop-filter: blur(10px);
+        }
+
+        .nav-buttons {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .nav-btn {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            border-radius: 15px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: #f8f9fa;
+            color: #666;
+        }
+
+        .nav-btn.active {
+            background: #3b82f6;
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(59, 130, 246, 0.4);
+        }
+
+        .section {
+            display: none;
+        }
+
+        .section.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #444;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e1e5e9;
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+            background: white;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+
+        .btn-primary {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(45deg, #3b82f6, #1d4ed8);
+            color: white;
+            border: none;
+            border-radius: 15px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 10px;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(59, 130, 246, 0.4);
+        }
+
+        .task-item {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 15px;
+            margin-bottom: 15px;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .task-title {
+            font-size: 1.2rem;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+
+        .task-details {
+            font-size: 0.9rem;
+            opacity: 0.9;
+            margin-bottom: 10px;
+        }
+
+        .task-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn-small {
+            padding: 8px 15px;
+            border: none;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-delete {
+            background: #ef4444;
+            color: white;
+        }
+
+        .btn-complete {
+            background: #10b981;
+            color: white;
+        }
+
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .calendar-day {
+            aspect-ratio: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #f8f9fa;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: bold;
+            position: relative;
+        }
+
+        .calendar-day:hover {
+            background: #e9ecef;
+        }
+
+        .calendar-day.has-tasks {
+            background: #3b82f6;
+            color: white;
+        }
+
+        .calendar-day.today {
+            background: #10b981;
+            color: white;
+        }
+
+        .calendar-header {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 10px;
+            margin-bottom: 10px;
+            text-align: center;
+            font-weight: bold;
+            color: #666;
+        }
+
+        .notification-setup {
+            background: #fef3c7;
+            border: 2px solid #f59e0b;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .notification-setup h3 {
+            color: #92400e;
+            margin-bottom: 10px;
+        }
+
+        .notification-setup p {
+            color: #78350f;
+            margin-bottom: 15px;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 40px 20px;
+            color: #666;
+        }
+
+        .empty-state h3 {
+            margin-bottom: 10px;
+            color: #444;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: white;
+            padding: 20px;
+            border-radius: 15px;
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>⏰ TimeOrganizer</h1>
+            <p>Organiza tu tiempo como un pro</p>
+        </div>
+
+        <div class="card">
+            <div class="nav-buttons">
+                <button class="nav-btn active" onclick="showSection('setup')">Configurar</button>
+                <button class="nav-btn" onclick="showSection('tasks')">Tareas</button>
+                <button class="nav-btn" onclick="showSection('calendar')">Calendario</button>
+            </div>
+
+            <!-- Sección de Configuración Inicial -->
+            <div id="setup" class="section active">
+                <div class="notification-setup">
+                    <h3>🔔 Notificaciones</h3>
+                    <p>Activa las notificaciones para recibir recordatorios</p>
+                    <button class="btn-primary" onclick="enableNotifications()">Activar Notificaciones</button>
+                </div>
+
+                <h2>📝 Agregar Nueva Actividad</h2>
+                <form id="taskForm">
+                    <div class="form-group">
+                        <label>¿Qué actividad quieres agregar?</label>
+                        <input type="text" class="form-control" id="taskName" placeholder="Ej: Estudiar matemáticas" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>¿Cuándo la quieres hacer?</label>
+                        <input type="date" class="form-control" id="taskDate" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>¿A qué hora?</label>
+                        <input type="time" class="form-control" id="taskTime" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>¿Qué tan importante es? (1-5)</label>
+                        <select class="form-control" id="taskPriority">
+                            <option value="1">1 - No muy importante</option>
+                            <option value="2">2 - Poco importante</option>
+                            <option value="3">3 - Normal</option>
+                            <option value="4">4 - Importante</option>
+                            <option value="5">5 - Súper importante</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Descripción adicional (opcional)</label>
+                        <textarea class="form-control" id="taskDescription" placeholder="Más detalles sobre la actividad..."></textarea>
+                    </div>
+
+                    <button type="submit" class="btn-primary">➕ Agregar Actividad</button>
+                </form>
+            </div>
+
+            <!-- Sección de Tareas -->
+            <div id="tasks" class="section">
+                <div class="stats">
+                    <div class="stat-card">
+                        <div class="stat-number" id="totalTasks">0</div>
+                        <div class="stat-label">Total Tareas</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number" id="todayTasks">0</div>
+                        <div class="stat-label">Para Hoy</div>
+                    </div>
+                </div>
+
+                <h2>📋 Mis Actividades</h2>
+                <div id="taskList">
+                    <div class="empty-state">
+                        <h3>¡No tienes actividades!</h3>
+                        <p>Ve a "Configurar" para agregar tu primera actividad</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sección de Calendario -->
+            <div id="calendar" class="section">
+                <h2>📅 Calendario</h2>
+                <div class="calendar-header">
+                    <div>Dom</div>
+                    <div>Lun</div>
+                    <div>Mar</div>
+                    <div>Mié</div>
+                    <div>Jue</div>
+                    <div>Vie</div>
+                    <div>Sáb</div>
+                </div>
+                <div class="calendar-grid" id="calendarGrid"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Estado global de la aplicación
+        let tasks = JSON.parse(localStorage.getItem('timeOrganizerTasks')) || [];
+        let notificationsEnabled = false;
+
+        // Inicializar la aplicación
+        document.addEventListener('DOMContentLoaded', function() {
+            // Configurar fecha mínima como hoy
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('taskDate').value = today;
+            document.getElementById('taskDate').min = today;
+
+            // Cargar datos guardados
+            updateTaskDisplay();
+            updateStats();
+            generateCalendar();
+
+            // Configurar formulario
+            document.getElementById('taskForm').addEventListener('submit', addTask);
+
+            // Verificar si ya se pidieron notificaciones
+            if (Notification.permission === 'granted') {
+                notificationsEnabled = true;
+                document.querySelector('.notification-setup').style.display = 'none';
+            }
+        });
+
+        // Cambiar entre secciones
+        function showSection(sectionName) {
+            // Ocultar todas las secciones
+            document.querySelectorAll('.section').forEach(section => {
+                section.classList.remove('active');
+            });
+
+            // Remover active de todos los botones
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+
+            // Mostrar sección seleccionada
+            document.getElementById(sectionName).classList.add('active');
+            event.target.classList.add('active');
+
+            // Actualizar calendario si se selecciona
+            if (sectionName === 'calendar') {
+                generateCalendar();
+            }
+        }
+
+        // Habilitar notificaciones
+        function enableNotifications() {
+            if ('Notification' in window) {
+                Notification.requestPermission().then(permission => {
+                    if (permission === 'granted') {
+                        notificationsEnabled = true;
+                        document.querySelector('.notification-setup').style.display = 'none';
+                        
+                        // Mostrar notificación de bienvenida
+                        new Notification('¡TimeOrganizer activado! 🎉', {
+                            body: 'Te avisaremos cuando sea hora de tus actividades',
+                            icon: 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12,6 12,12 16,14"></polyline></svg>'
+                        });
+
+                        // Programar notificaciones existentes
+                        schedulePendingNotifications();
+                    } else {
+                        alert('Las notificaciones están bloqueadas. Puedes activarlas desde la configuración de tu navegador.');
+                    }
+                });
+            } else {
+                alert('Tu navegador no soporta notificaciones.');
+            }
+        }
+
+        // Agregar nueva tarea
+        function addTask(e) {
+            e.preventDefault();
+            
+            const task = {
+                id: Date.now(),
+                name: document.getElementById('taskName').value,
+                date: document.getElementById('taskDate').value,
+                time: document.getElementById('taskTime').value,
+                priority: parseInt(document.getElementById('taskPriority').value),
+                description: document.getElementById('taskDescription').value,
+                completed: false,
+                createdAt: new Date()
+            };
+
+            tasks.push(task);
+            saveTasks();
+            updateTaskDisplay();
+            updateStats();
+            generateCalendar();
+
+            // Programar notificación
+            if (notificationsEnabled) {
+                scheduleNotification(task);
+            }
+
+            // Limpiar formulario
+            document.getElementById('taskForm').reset();
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('taskDate').value = today;
+
+            // Ir a la sección de tareas
+            showSection('tasks');
+            
+            alert('¡Actividad agregada con éxito! 🎉');
+        }
+
+        // Programar notificación
+        function scheduleNotification(task) {
+            const taskDateTime = new Date(`${task.date}T${task.time}`);
+            const now = new Date();
+            const timeDiff = taskDateTime.getTime() - now.getTime();
+
+            if (timeDiff > 0) {
+                // Notificación 15 minutos antes
+                const reminderTime = timeDiff - (15 * 60 * 1000);
+                if (reminderTime > 0) {
+                    setTimeout(() => {
+                        if (notificationsEnabled) {
+                            new Notification(`⏰ Recordatorio: ${task.name}`, {
+                                body: `En 15 minutos: ${task.name}`,
+                                icon: 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path><line x1="3" y1="6" x2="21" y2="6"></line><path d="M16 10a4 4 0 0 1-8 0"></path></svg>'
+                            });
+                        }
+                    }, reminderTime);
+                }
+
+                // Notificación en el momento exacto
+                setTimeout(() => {
+                    if (notificationsEnabled) {
+                        new Notification(`🚨 ¡Es hora! ${task.name}`, {
+                            body: `Tu actividad "${task.name}" debe realizarse ahora`,
+                            icon: 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12,6 12,12 16,14"></polyline></svg>',
+                            requireInteraction: true
+                        });
+                    }
+                }, timeDiff);
+            }
+        }
+
+        // Programar notificaciones pendientes
+        function schedulePendingNotifications() {
+            tasks.filter(task => !task.completed).forEach(task => {
+                scheduleNotification(task);
+            });
+        }
+
+        // Actualizar visualización de tareas
+        function updateTaskDisplay() {
+            const taskList = document.getElementById('taskList');
+            
+            if (tasks.length === 0) {
+                taskList.innerHTML = `
+                    <div class="empty-state">
+                        <h3>¡No tienes actividades!</h3>
+                        <p>Ve a "Configurar" para agregar tu primera actividad</p>
+                    </div>
+                `;
+                return;
+            }
+
+            // Ordenar tareas por fecha y prioridad
+            const sortedTasks = tasks.sort((a, b) => {
+                const dateA = new Date(`${a.date}T${a.time}`);
+                const dateB = new Date(`${b.date}T${b.time}`);
+                if (dateA.getTime() !== dateB.getTime()) {
+                    return dateA - dateB;
+                }
+                return b.priority - a.priority;
+            });
+
+            taskList.innerHTML = sortedTasks.map(task => {
+                const taskDate = new Date(`${task.date}T${task.time}`);
+                const isOverdue = taskDate < new Date() && !task.completed;
+                const priorityText = ['', 'Baja', 'Baja', 'Normal', 'Alta', 'Crítica'][task.priority];
+                
+                return `
+                    <div class="task-item ${task.completed ? 'completed' : ''} ${isOverdue ? 'overdue' : ''}">
+                        <div class="task-title">${task.name}</div>
+                        <div class="task-details">
+                            📅 ${new Date(task.date).toLocaleDateString('es-ES')} a las ${task.time}<br>
+                            🎯 Prioridad: ${priorityText}<br>
+                            ${task.description ? `📝 ${task.description}` : ''}
+                            ${isOverdue ? '<br>⚠️ <strong>Vencida</strong>' : ''}
+                        </div>
+                        <div class="task-actions">
+                            <button class="btn-small btn-complete" onclick="completeTask(${task.id})">
+                                ${task.completed ? '✅ Completada' : '✅ Completar'}
+                            </button>
+                            <button class="btn-small btn-delete" onclick="deleteTask(${task.id})">🗑️ Eliminar</button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // Completar tarea
+        function completeTask(taskId) {
+            const task = tasks.find(t => t.id === taskId);
+            if (task) {
+                task.completed = !task.completed;
+                saveTasks();
+                updateTaskDisplay();
+                updateStats();
+            }
+        }
+
+        // Eliminar tarea
+        function deleteTask(taskId) {
+            if (confirm('¿Estás seguro de que quieres eliminar esta actividad?')) {
+                tasks = tasks.filter(t => t.id !== taskId);
+                saveTasks();
+                updateTaskDisplay();
+                updateStats();
+                generateCalendar();
+            }
+        }
+
+        // Actualizar estadísticas
+        function updateStats() {
+            const today = new Date().toDateString();
+            const todayTasks = tasks.filter(task => {
+                const taskDate = new Date(task.date).toDateString();
+                return taskDate === today && !task.completed;
+            }).length;
+
+            document.getElementById('totalTasks').textContent = tasks.length;
+            document.getElementById('todayTasks').textContent = todayTasks;
+        }
+
+        // Generar calendario
+        function generateCalendar() {
+            const calendarGrid = document.getElementById('calendarGrid');
+            const now = new Date();
+            const firstDay = new Date(now.getFullYear(), now.getMonth(), 1);
+            const lastDay = new Date(now.getFullYear(), now.getMonth() + 1, 0);
+            const startDate = new Date(firstDay);
+            startDate.setDate(startDate.getDate() - firstDay.getDay());
+
+            let calendarHTML = '';
+            const today = now.toDateString();
+
+            for (let i = 0; i < 42; i++) {
+                const currentDate = new Date(startDate);
+                currentDate.setDate(startDate.getDate() + i);
+                
+                const dateString = currentDate.toISOString().split('T')[0];
+                const hasTasks = tasks.some(task => task.date === dateString);
+                const isToday = currentDate.toDateString() === today;
+                const isCurrentMonth = currentDate.getMonth() === now.getMonth();
+
+                calendarHTML += `
+                    <div class="calendar-day ${hasTasks ? 'has-tasks' : ''} ${isToday ? 'today' : ''} ${!isCurrentMonth ? 'other-month' : ''}" 
+                         onclick="showDayTasks('${dateString}')"
+                         title="${hasTasks ? 'Tienes actividades este día' : 'Sin actividades'}">
+                        ${currentDate.getDate()}
+                    </div>
+                `;
+            }
+
+            calendarGrid.innerHTML = calendarHTML;
+        }
+
+        // Mostrar tareas del día
+        function showDayTasks(dateString) {
+            const dayTasks = tasks.filter(task => task.date === dateString);
+            const formattedDate = new Date(dateString).toLocaleDateString('es-ES');
+            
+            if (dayTasks.length === 0) {
+                alert(`No tienes actividades para el ${formattedDate}`);
+                return;
+            }
+
+            const taskList = dayTasks.map(task => 
+                `• ${task.time} - ${task.name} ${task.completed ? '✅' : ''}`
+            ).join('\n');
+
+            alert(`Actividades para el ${formattedDate}:\n\n${taskList}`);
+        }
+
+        // Guardar tareas en localStorage
+        function saveTasks() {
+            localStorage.setItem('timeOrganizerTasks', JSON.stringify(tasks));
+        }
+
+        // Registrar Service Worker para PWA
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('data:application/javascript;base64,c2VsZi5hZGRFdmVudExpc3RlbmVyKCdpbnN0YWxsJywgZXZlbnQgPT4ge30pOw==');
+        }
+
+        // Agregar estilos para estados especiales
+        const additionalStyles = `
+            <style>
+                .task-item.completed {
+                    opacity: 0.6;
+                    background: linear-gradient(135deg, #10b981, #059669) !important;
+                }
+                
+                .task-item.overdue {
+                    background: linear-gradient(135deg, #ef4444, #dc2626) !important;
+                }
+                
+                .calendar-day.other-month {
+                    opacity: 0.3;
+                }
+            </style>
+        `;
+        document.head.insertAdjacentHTML('beforeend', additionalStyles);
+    </script>
+</body>
+</html>
