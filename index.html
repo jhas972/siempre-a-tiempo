@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Siempre a Tiempo</title>
-    <link rel="manifest" href="data:application/json;base64,eyJuYW1lIjoiVGltZU9yZ2FuaXplciIsInNob3J0X25hbWUiOiJUaW1lT3JnIiwic3RhcnRfdXJsIjoiLyIsImRpc3BsYXkiOiJzdGFuZGFsb25lIiwiYmFja2dyb3VuZF9jb2xvciI6IiMxZTI5M2IiLCJ0aGVtZV9jb2xvciI6IiMzYjgyZjYifQ==">
+    <link rel="manifest" href="data:application/json;base64,eyJuYW1lIjoiVGltZU9yZ2FuaXplciIsInNob3J0X25hbWUiOiJUaW1lT3JnIiwic3RhcnRfdXJsIjoiLyIsImRpc3BsYXkiOiJzdGFuZGFsb25lIiwiYmFja2dyb3VuZF9jb2xvciI6IiNlYzQ4OWEiLCJ0aGVtZV9jb2xvciI6IiNmOWE4ZDQifQ==">
     <style>
         * {
             margin: 0;
@@ -14,7 +14,7 @@
 
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #f9a8d4 0%, #ec4899 50%, #be185d 100%);
             min-height: 100vh;
             color: #333;
         }
@@ -49,18 +49,19 @@
             border-radius: 20px;
             padding: 25px;
             margin-bottom: 20px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            box-shadow: 0 15px 35px rgba(190, 24, 93, 0.3);
             backdrop-filter: blur(10px);
+            border: 2px solid rgba(249, 168, 212, 0.3);
         }
 
         .nav-buttons {
-            display: flex;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
             gap: 10px;
             margin-bottom: 20px;
         }
 
         .nav-btn {
-            flex: 1;
             padding: 12px;
             border: none;
             border-radius: 15px;
@@ -68,15 +69,22 @@
             font-weight: bold;
             cursor: pointer;
             transition: all 0.3s ease;
-            background: #f8f9fa;
-            color: #666;
+            background: linear-gradient(135deg, #fce7f3, #f3e8ff);
+            color: #be185d;
+            border: 2px solid transparent;
         }
 
         .nav-btn.active {
-            background: #3b82f6;
+            background: linear-gradient(135deg, #ec4899, #be185d);
             color: white;
             transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(59, 130, 246, 0.4);
+            box-shadow: 0 8px 25px rgba(236, 72, 153, 0.4);
+            border: 2px solid #f9a8d4;
+        }
+
+        .nav-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 5px 15px rgba(236, 72, 153, 0.2);
         }
 
         .section {
@@ -101,29 +109,31 @@
             display: block;
             margin-bottom: 8px;
             font-weight: bold;
-            color: #444;
+            color: #be185d;
+            font-size: 1.1rem;
         }
 
         .form-control {
             width: 100%;
             padding: 12px 15px;
-            border: 2px solid #e1e5e9;
-            border-radius: 10px;
+            border: 2px solid #f9a8d4;
+            border-radius: 15px;
             font-size: 1rem;
-            transition: border-color 0.3s ease;
-            background: white;
+            transition: all 0.3s ease;
+            background: linear-gradient(135deg, #fdf2f8, #fff);
         }
 
         .form-control:focus {
             outline: none;
-            border-color: #3b82f6;
-            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+            border-color: #ec4899;
+            box-shadow: 0 0 0 4px rgba(236, 72, 153, 0.1);
+            transform: translateY(-2px);
         }
 
         .btn-primary {
             width: 100%;
             padding: 15px;
-            background: linear-gradient(45deg, #3b82f6, #1d4ed8);
+            background: linear-gradient(45deg, #ec4899, #be185d);
             color: white;
             border: none;
             border-radius: 15px;
@@ -132,32 +142,36 @@
             cursor: pointer;
             transition: all 0.3s ease;
             margin-top: 10px;
+            box-shadow: 0 5px 15px rgba(236, 72, 153, 0.3);
         }
 
         .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 25px rgba(59, 130, 246, 0.4);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(236, 72, 153, 0.4);
         }
 
         .task-item {
-            background: linear-gradient(135deg, #667eea, #764ba2);
+            background: linear-gradient(135deg, #f9a8d4, #ec4899);
             color: white;
-            padding: 15px;
+            padding: 18px;
             margin-bottom: 15px;
-            border-radius: 15px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            border-radius: 18px;
+            box-shadow: 0 8px 20px rgba(236, 72, 153, 0.3);
+            border: 2px solid rgba(255,255,255,0.2);
         }
 
         .task-title {
-            font-size: 1.2rem;
+            font-size: 1.3rem;
             font-weight: bold;
-            margin-bottom: 8px;
+            margin-bottom: 10px;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
         }
 
         .task-details {
-            font-size: 0.9rem;
-            opacity: 0.9;
-            margin-bottom: 10px;
+            font-size: 0.95rem;
+            opacity: 0.95;
+            margin-bottom: 12px;
+            line-height: 1.4;
         }
 
         .task-actions {
@@ -166,28 +180,29 @@
         }
 
         .btn-small {
-            padding: 8px 15px;
+            padding: 10px 15px;
             border: none;
-            border-radius: 8px;
+            border-radius: 12px;
             font-size: 0.9rem;
             cursor: pointer;
             transition: all 0.3s ease;
+            font-weight: bold;
         }
 
         .btn-delete {
-            background: #ef4444;
+            background: linear-gradient(135deg, #ef4444, #dc2626);
             color: white;
         }
 
         .btn-complete {
-            background: #10b981;
+            background: linear-gradient(135deg, #10b981, #059669);
             color: white;
         }
 
         .calendar-grid {
             display: grid;
             grid-template-columns: repeat(7, 1fr);
-            gap: 10px;
+            gap: 8px;
             margin-top: 20px;
         }
 
@@ -196,152 +211,466 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            background: #f8f9fa;
-            border-radius: 10px;
+            background: linear-gradient(135deg, #fdf2f8, #fce7f3);
+            border-radius: 12px;
             cursor: pointer;
             transition: all 0.3s ease;
             font-weight: bold;
-            position: relative;
+            color: #be185d;
+            border: 2px solid #f9a8d4;
         }
 
         .calendar-day:hover {
-            background: #e9ecef;
+            background: linear-gradient(135deg, #fce7f3, #f9a8d4);
+            transform: scale(1.05);
         }
 
         .calendar-day.has-tasks {
-            background: #3b82f6;
+            background: linear-gradient(135deg, #ec4899, #be185d);
             color: white;
+            box-shadow: 0 4px 12px rgba(236, 72, 153, 0.4);
         }
 
         .calendar-day.today {
-            background: #10b981;
+            background: linear-gradient(135deg, #10b981, #059669);
             color: white;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
         }
 
         .calendar-header {
             display: grid;
             grid-template-columns: repeat(7, 1fr);
-            gap: 10px;
-            margin-bottom: 10px;
+            gap: 8px;
+            margin-bottom: 15px;
             text-align: center;
             font-weight: bold;
-            color: #666;
+            color: #be185d;
         }
 
         .notification-setup {
-            background: #fef3c7;
-            border: 2px solid #f59e0b;
-            border-radius: 15px;
-            padding: 20px;
-            margin-bottom: 20px;
+            background: linear-gradient(135deg, #fef3c7, #fed7aa);
+            border: 3px solid #f59e0b;
+            border-radius: 18px;
+            padding: 25px;
+            margin-bottom: 25px;
             text-align: center;
         }
 
         .notification-setup h3 {
             color: #92400e;
-            margin-bottom: 10px;
+            margin-bottom: 12px;
+            font-size: 1.3rem;
         }
 
         .notification-setup p {
             color: #78350f;
-            margin-bottom: 15px;
+            margin-bottom: 18px;
         }
 
         .empty-state {
             text-align: center;
             padding: 40px 20px;
-            color: #666;
+            color: #be185d;
         }
 
         .empty-state h3 {
-            margin-bottom: 10px;
-            color: #444;
+            margin-bottom: 15px;
+            color: #ec4899;
+            font-size: 1.5rem;
         }
 
         .stats {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 15px;
-            margin-bottom: 20px;
+            margin-bottom: 25px;
         }
 
         .stat-card {
-            background: linear-gradient(135deg, #10b981, #059669);
+            background: linear-gradient(135deg, #ec4899, #be185d);
             color: white;
             padding: 20px;
-            border-radius: 15px;
+            border-radius: 18px;
             text-align: center;
+            box-shadow: 0 8px 20px rgba(236, 72, 153, 0.3);
         }
 
         .stat-number {
-            font-size: 2rem;
+            font-size: 2.2rem;
             font-weight: bold;
-            margin-bottom: 5px;
+            margin-bottom: 8px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
         }
 
         .stat-label {
             font-size: 0.9rem;
             opacity: 0.9;
         }
+
+        .smart-schedule-card {
+            background: linear-gradient(135deg, #fdf2f8, #fce7f3);
+            border: 3px solid #f9a8d4;
+            border-radius: 20px;
+            padding: 25px;
+            margin-bottom: 25px;
+        }
+
+        .smart-schedule-card h2 {
+            color: #be185d;
+            margin-bottom: 15px;
+            text-align: center;
+            font-size: 1.4rem;
+        }
+
+        .habit-item {
+            background: white;
+            border: 2px solid #f9a8d4;
+            border-radius: 12px;
+            padding: 15px;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .habit-checkbox {
+            width: 20px;
+            height: 20px;
+            accent-color: #ec4899;
+        }
+
+        .habit-text {
+            flex: 1;
+            color: #be185d;
+            font-weight: 500;
+        }
+
+        .priority-badge {
+            background: linear-gradient(135deg, #ec4899, #be185d);
+            color: white;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+
+        .schedule-result {
+            background: linear-gradient(135deg, #ecfdf5, #d1fae5);
+            border: 2px solid #10b981;
+            border-radius: 15px;
+            padding: 20px;
+            margin-top: 20px;
+        }
+
+        .schedule-result h3 {
+            color: #059669;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        .schedule-item {
+            background: white;
+            border-left: 4px solid #10b981;
+            padding: 12px;
+            margin-bottom: 10px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(16, 185, 129, 0.1);
+        }
+
+        .time-slot {
+            font-weight: bold;
+            color: #059669;
+            margin-bottom: 5px;
+        }
+
+        .activity-name {
+            color: #065f46;
+            font-size: 1.1rem;
+            margin-bottom: 3px;
+        }
+
+        .activity-priority {
+            font-size: 0.8rem;
+            color: #6b7280;
+        }
+
+        .question-card {
+            background: linear-gradient(135deg, #fdf2f8, #fce7f3);
+            border: 3px solid #f9a8d4;
+            border-radius: 18px;
+            padding: 25px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .question-card h3 {
+            color: #be185d;
+            margin-bottom: 15px;
+            font-size: 1.3rem;
+        }
+
+        .question-card p {
+            color: #831843;
+            margin-bottom: 20px;
+            font-size: 1rem;
+        }
+
+        .option-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .option-btn {
+            padding: 15px;
+            border: 2px solid #f9a8d4;
+            border-radius: 12px;
+            background: white;
+            color: #be185d;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .option-btn:hover {
+            background: #f9a8d4;
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .option-btn.selected {
+            background: linear-gradient(135deg, #ec4899, #be185d);
+            color: white;
+            border-color: #be185d;
+        }
+
+        .progress-bar {
+            background: #fce7f3;
+            height: 8px;
+            border-radius: 10px;
+            margin: 20px 0;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            background: linear-gradient(90deg, #ec4899, #be185d);
+            height: 100%;
+            border-radius: 10px;
+            transition: width 0.5s ease;
+        }
+
+        .survey-step {
+            display: none;
+        }
+
+        .survey-step.active {
+            display: block;
+            animation: slideIn 0.5s ease;
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(50px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <div class="header">
-            <h1>⏰ Siempre a Tiempo</h1>
-            <p>Organiza tu tiempo como un pro</p>
+            <h1>💖 Siempre a Tiempo</h1>
+            <p>Tu asistente personal rosa para organizar tu vida</p>
         </div>
 
         <div class="card">
             <div class="nav-buttons">
-                <button class="nav-btn active" onclick="showSection('setup')">Configurar</button>
-                <button class="nav-btn" onclick="showSection('tasks')">Tareas</button>
-                <button class="nav-btn" onclick="showSection('calendar')">Calendario</button>
+                <button class="nav-btn active" onclick="showSection('setup')">✨ Configurar</button>
+                <button class="nav-btn" onclick="showSection('smart')">🧠 Horario IA</button>
+                <button class="nav-btn" onclick="showSection('tasks')">📋 Mis Tareas</button>
+                <button class="nav-btn" onclick="showSection('calendar')">📅 Calendario</button>
             </div>
 
-            <!-- Sección de Configuración Inicial -->
+            <!-- Sección de Configuración -->
             <div id="setup" class="section active">
                 <div class="notification-setup">
-                    <h3>🔔 Notificaciones</h3>
-                    <p>Activa las notificaciones para recibir recordatorios</p>
-                    <button class="btn-primary" onclick="enableNotifications()">Activar Notificaciones</button>
+                    <h3>🔔 Notificaciones Mágicas</h3>
+                    <p>Activa las notificaciones para recibir recordatorios súper personalizados</p>
+                    <button class="btn-primary" onclick="enableNotifications()">✨ Activar Notificaciones</button>
                 </div>
 
-                <h2>📝 Agregar Nueva Actividad</h2>
+                <h2 style="color: #be185d; text-align: center; margin-bottom: 20px;">💫 Agregar Nueva Actividad</h2>
                 <form id="taskForm">
                     <div class="form-group">
-                        <label>¿Qué actividad quieres agregar?</label>
-                        <input type="text" class="form-control" id="taskName" placeholder="Ej: Estudiar matemáticas" required>
+                        <label>🎯 ¿Qué actividad quieres agregar?</label>
+                        <input type="text" class="form-control" id="taskName" placeholder="Ej: Estudiar para el examen de matemáticas" required>
                     </div>
 
                     <div class="form-group">
-                        <label>¿Cuándo la quieres hacer?</label>
+                        <label>📅 ¿Cuándo la quieres hacer?</label>
                         <input type="date" class="form-control" id="taskDate" required>
                     </div>
 
                     <div class="form-group">
-                        <label>¿A qué hora?</label>
+                        <label>⏰ ¿A qué hora?</label>
                         <input type="time" class="form-control" id="taskTime" required>
                     </div>
 
                     <div class="form-group">
-                        <label>¿Qué tan importante es? (1-5)</label>
+                        <label>⭐ ¿Qué tan importante es?</label>
                         <select class="form-control" id="taskPriority">
-                            <option value="1">1 - No muy importante</option>
-                            <option value="2">2 - Poco importante</option>
-                            <option value="3">3 - Normal</option>
-                            <option value="4">4 - Importante</option>
-                            <option value="5">5 - Súper importante</option>
+                            <option value="1">💤 Relajado - No hay prisa</option>
+                            <option value="2">😊 Tranquilo - Cuando pueda</option>
+                            <option value="3" selected>🎯 Normal - Es importante</option>
+                            <option value="4">🔥 Urgente - Muy importante</option>
+                            <option value="5">🚨 ¡SÚPER URGENTE! - No puede esperar</option>
                         </select>
                     </div>
 
                     <div class="form-group">
-                        <label>Descripción adicional (opcional)</label>
+                        <label>📝 Descripción (opcional)</label>
                         <textarea class="form-control" id="taskDescription" placeholder="Más detalles sobre la actividad..."></textarea>
                     </div>
 
-                    <button type="submit" class="btn-primary">➕ Agregar Actividad</button>
+                    <button type="submit" class="btn-primary">💖 Agregar Actividad</button>
                 </form>
+            </div>
+
+            <!-- Sección de Horario Inteligente -->
+            <div id="smart" class="section">
+                <div class="smart-schedule-card">
+                    <h2>🧠 Horario Inteligente Personal</h2>
+                    <p style="text-align: center; color: #831843; margin-bottom: 20px;">
+                        ¡Cuéntame sobre tu rutina diaria y yo organizaré todo por prioridad!
+                    </p>
+                    
+                    <div id="surveyContainer">
+                        <!-- Step 1 -->
+                        <div class="survey-step active" id="step1">
+                            <div class="question-card">
+                                <h3>🌅 ¿Cómo prefieres empezar tu día?</h3>
+                                <p>Esto me ayuda a organizar tu mañana perfecta</p>
+                                <div class="option-grid">
+                                    <button class="option-btn" onclick="selectOption('morning', 'early')">🌄 Temprano (6-7 AM)</button>
+                                    <button class="option-btn" onclick="selectOption('morning', 'normal')">☀️ Normal (7-9 AM)</button>
+                                    <button class="option-btn" onclick="selectOption('morning', 'late')">😴 Tarde (9-11 AM)</button>
+                                    <button class="option-btn" onclick="selectOption('morning', 'flexible')">🤷‍♀️ Flexible</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Step 2 -->
+                        <div class="survey-step" id="step2">
+                            <div class="question-card">
+                                <h3>💪 ¿Qué actividades haces normalmente?</h3>
+                                <p>Selecciona todas las que apliquen para ti</p>
+                                <div class="habit-grid">
+                                    <div class="habit-item">
+                                        <input type="checkbox" class="habit-checkbox" id="study" value="Estudiar">
+                                        <label class="habit-text" for="study">📚 Estudiar/Tareas</label>
+                                    </div>
+                                    <div class="habit-item">
+                                        <input type="checkbox" class="habit-checkbox" id="work" value="Trabajar">
+                                        <label class="habit-text" for="work">💼 Trabajar</label>
+                                    </div>
+                                    <div class="habit-item">
+                                        <input type="checkbox" class="habit-checkbox" id="exercise" value="Ejercitarse">
+                                        <label class="habit-text" for="exercise">🏋️‍♀️ Ejercitarse</label>
+                                    </div>
+                                    <div class="habit-item">
+                                        <input type="checkbox" class="habit-checkbox" id="cook" value="Cocinar">
+                                        <label class="habit-text" for="cook">🍳 Cocinar</label>
+                                    </div>
+                                    <div class="habit-item">
+                                        <input type="checkbox" class="habit-checkbox" id="clean" value="Limpiar">
+                                        <label class="habit-text" for="clean">🧹 Limpiar casa</label>
+                                    </div>
+                                    <div class="habit-item">
+                                        <input type="checkbox" class="habit-checkbox" id="social" value="Socializar">
+                                        <label class="habit-text" for="social">👥 Tiempo social</label>
+                                    </div>
+                                    <div class="habit-item">
+                                        <input type="checkbox" class="habit-checkbox" id="relax" value="Relajarse">
+                                        <label class="habit-text" for="relax">🛋️ Relajarse</label>
+                                    </div>
+                                    <div class="habit-item">
+                                        <input type="checkbox" class="habit-checkbox" id="hobby" value="Hobbies">
+                                        <label class="habit-text" for="hobby">🎨 Hobbies</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Step 3 -->
+                        <div class="survey-step" id="step3">
+                            <div class="question-card">
+                                <h3>⚡ ¿Cuándo tienes más energía?</h3>
+                                <p>Esto me ayuda a programar tus actividades más importantes</p>
+                                <div class="option-grid">
+                                    <button class="option-btn" onclick="selectOption('energy', 'morning')">🌅 Mañana</button>
+                                    <button class="option-btn" onclick="selectOption('energy', 'afternoon')">☀️ Tarde</button>
+                                    <button class="option-btn" onclick="selectOption('energy', 'evening')">🌆 Noche</button>
+                                    <button class="option-btn" onclick="selectOption('energy', 'varies')">🔄 Varía</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Step 4 -->
+                        <div class="survey-step" id="step4">
+                            <div class="question-card">
+                                <h3>🎯 ¿Cuáles son tus prioridades actuales?</h3>
+                                <p>Ordena por importancia (1 = más importante)</p>
+                                <div class="priority-list">
+                                    <select class="form-control" id="priority1">
+                                        <option value="">Prioridad #1</option>
+                                        <option value="study">📚 Estudios/Educación</option>
+                                        <option value="work">💼 Trabajo/Carrera</option>
+                                        <option value="health">💪 Salud/Ejercicio</option>
+                                        <option value="family">👨‍👩‍👧‍👦 Familia/Relaciones</option>
+                                        <option value="personal">🌱 Crecimiento personal</option>
+                                        <option value="finance">💰 Finanzas</option>
+                                    </select>
+                                    <select class="form-control" id="priority2" style="margin-top: 10px;">
+                                        <option value="">Prioridad #2</option>
+                                        <option value="study">📚 Estudios/Educación</option>
+                                        <option value="work">💼 Trabajo/Carrera</option>
+                                        <option value="health">💪 Salud/Ejercicio</option>
+                                        <option value="family">👨‍👩‍👧‍👦 Familia/Relaciones</option>
+                                        <option value="personal">🌱 Crecimiento personal</option>
+                                        <option value="finance">💰 Finanzas</option>
+                                    </select>
+                                    <select class="form-control" id="priority3" style="margin-top: 10px;">
+                                        <option value="">Prioridad #3</option>
+                                        <option value="study">📚 Estudios/Educación</option>
+                                        <option value="work">💼 Trabajo/Carrera</option>
+                                        <option value="health">💪 Salud/Ejercicio</option>
+                                        <option value="family">👨‍👩‍👧‍👦 Familia/Relaciones</option>
+                                        <option value="personal">🌱 Crecimiento personal</option>
+                                        <option value="finance">💰 Finanzas</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="progressFill" style="width: 25%"></div>
+                        </div>
+
+                        <div style="display: flex; gap: 10px; margin-top: 20px;">
+                            <button class="btn-primary" onclick="previousStep()" id="prevBtn" style="display: none;">⬅️ Anterior</button>
+                            <button class="btn-primary" onclick="nextStep()" id="nextBtn">Siguiente ➡️</button>
+                            <button class="btn-primary" onclick="generateSmartSchedule()" id="generateBtn" style="display: none;">✨ Crear Mi Horario</button>
+                        </div>
+                    </div>
+
+                    <div id="scheduleResult" style="display: none;">
+                        <!-- Aquí se mostrará el horario generado -->
+                    </div>
+                </div>
             </div>
 
             <!-- Sección de Tareas -->
@@ -357,18 +686,18 @@
                     </div>
                 </div>
 
-                <h2>📋 Mis Actividades</h2>
+                <h2 style="color: #be185d; text-align: center; margin-bottom: 20px;">📋 Mis Actividades</h2>
                 <div id="taskList">
                     <div class="empty-state">
                         <h3>¡No tienes actividades!</h3>
-                        <p>Ve a "Configurar" para agregar tu primera actividad</p>
+                        <p>Ve a "Configurar" para agregar tu primera actividad o usa el "Horario IA" para generar una rutina automática</p>
                     </div>
                 </div>
             </div>
 
             <!-- Sección de Calendario -->
             <div id="calendar" class="section">
-                <h2>📅 Calendario</h2>
+                <h2 style="color: #be185d; text-align: center; margin-bottom: 20px;">📅 Mi Calendario Rosa</h2>
                 <div class="calendar-header">
                     <div>Dom</div>
                     <div>Lun</div>
@@ -386,315 +715,19 @@
     <script>
         // Estado global de la aplicación
         let tasks = JSON.parse(localStorage.getItem('timeOrganizerTasks')) || [];
+        let smartSchedule = JSON.parse(localStorage.getItem('smartScheduleData')) || {};
         let notificationsEnabled = false;
+        let currentStep = 1;
+        let surveyData = {};
 
-        // Inicializar la aplicación
-        document.addEventListener('DOMContentLoaded', function() {
-            // Configurar fecha mínima como hoy
-            const today = new Date().toISOString().split('T')[0];
-            document.getElementById('taskDate').value = today;
-            document.getElementById('taskDate').min = today;
-
-            // Cargar datos guardados
-            updateTaskDisplay();
-            updateStats();
-            generateCalendar();
-
-            // Configurar formulario
-            document.getElementById('taskForm').addEventListener('submit', addTask);
-
-            // Verificar si ya se pidieron notificaciones
-            if (Notification.permission === 'granted') {
-                notificationsEnabled = true;
-                document.querySelector('.notification-setup').style.display = 'none';
-            }
-        });
-
-        // Cambiar entre secciones
-        function showSection(sectionName) {
-            // Ocultar todas las secciones
-            document.querySelectorAll('.section').forEach(section => {
-                section.classList.remove('active');
-            });
-
-            // Remover active de todos los botones
-            document.querySelectorAll('.nav-btn').forEach(btn => {
-                btn.classList.remove('active');
-            });
-
-            // Mostrar sección seleccionada
-            document.getElementById(sectionName).classList.add('active');
-            event.target.classList.add('active');
-
-            // Actualizar calendario si se selecciona
-            if (sectionName === 'calendar') {
-                generateCalendar();
-            }
-        }
-
-        // Habilitar notificaciones
-        function enableNotifications() {
-            if ('Notification' in window) {
-                Notification.requestPermission().then(permission => {
-                    if (permission === 'granted') {
-                        notificationsEnabled = true;
-                        document.querySelector('.notification-setup').style.display = 'none';
-                        
-                        // Mostrar notificación de bienvenida
-                        new Notification('¡TimeOrganizer activado! 🎉', {
-                            body: 'Te avisaremos cuando sea hora de tus actividades',
-                            icon: 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12,6 12,12 16,14"></polyline></svg>'
-                        });
-
-                        // Programar notificaciones existentes
-                        schedulePendingNotifications();
-                    } else {
-                        alert('Las notificaciones están bloqueadas. Puedes activarlas desde la configuración de tu navegador.');
-                    }
-                });
-            } else {
-                alert('Tu navegador no soporta notificaciones.');
-            }
-        }
-
-        // Agregar nueva tarea
-        function addTask(e) {
-            e.preventDefault();
-            
-            const task = {
-                id: Date.now(),
-                name: document.getElementById('taskName').value,
-                date: document.getElementById('taskDate').value,
-                time: document.getElementById('taskTime').value,
-                priority: parseInt(document.getElementById('taskPriority').value),
-                description: document.getElementById('taskDescription').value,
-                completed: false,
-                createdAt: new Date()
-            };
-
-            tasks.push(task);
-            saveTasks();
-            updateTaskDisplay();
-            updateStats();
-            generateCalendar();
-
-            // Programar notificación
-            if (notificationsEnabled) {
-                scheduleNotification(task);
-            }
-
-            // Limpiar formulario
-            document.getElementById('taskForm').reset();
-            const today = new Date().toISOString().split('T')[0];
-            document.getElementById('taskDate').value = today;
-
-            // Ir a la sección de tareas
-            showSection('tasks');
-            
-            alert('¡Actividad agregada con éxito! 🎉');
-        }
-
-        // Programar notificación
-        function scheduleNotification(task) {
-            const taskDateTime = new Date(`${task.date}T${task.time}`);
-            const now = new Date();
-            const timeDiff = taskDateTime.getTime() - now.getTime();
-
-            if (timeDiff > 0) {
-                // Notificación 15 minutos antes
-                const reminderTime = timeDiff - (15 * 60 * 1000);
-                if (reminderTime > 0) {
-                    setTimeout(() => {
-                        if (notificationsEnabled) {
-                            new Notification(`⏰ Recordatorio: ${task.name}`, {
-                                body: `En 15 minutos: ${task.name}`,
-                                icon: 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path><line x1="3" y1="6" x2="21" y2="6"></line><path d="M16 10a4 4 0 0 1-8 0"></path></svg>'
-                            });
-                        }
-                    }, reminderTime);
-                }
-
-                // Notificación en el momento exacto
-                setTimeout(() => {
-                    if (notificationsEnabled) {
-                        new Notification(`🚨 ¡Es hora! ${task.name}`, {
-                            body: `Tu actividad "${task.name}" debe realizarse ahora`,
-                            icon: 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12,6 12,12 16,14"></polyline></svg>',
-                            requireInteraction: true
-                        });
-                    }
-                }, timeDiff);
-            }
-        }
-
-        // Programar notificaciones pendientes
-        function schedulePendingNotifications() {
-            tasks.filter(task => !task.completed).forEach(task => {
-                scheduleNotification(task);
-            });
-        }
-
-        // Actualizar visualización de tareas
-        function updateTaskDisplay() {
-            const taskList = document.getElementById('taskList');
-            
-            if (tasks.length === 0) {
-                taskList.innerHTML = `
-                    <div class="empty-state">
-                        <h3>¡No tienes actividades!</h3>
-                        <p>Ve a "Configurar" para agregar tu primera actividad</p>
-                    </div>
-                `;
-                return;
-            }
-
-            // Ordenar tareas por fecha y prioridad
-            const sortedTasks = tasks.sort((a, b) => {
-                const dateA = new Date(`${a.date}T${a.time}`);
-                const dateB = new Date(`${b.date}T${b.time}`);
-                if (dateA.getTime() !== dateB.getTime()) {
-                    return dateA - dateB;
-                }
-                return b.priority - a.priority;
-            });
-
-            taskList.innerHTML = sortedTasks.map(task => {
-                const taskDate = new Date(`${task.date}T${task.time}`);
-                const isOverdue = taskDate < new Date() && !task.completed;
-                const priorityText = ['', 'Baja', 'Baja', 'Normal', 'Alta', 'Crítica'][task.priority];
-                
-                return `
-                    <div class="task-item ${task.completed ? 'completed' : ''} ${isOverdue ? 'overdue' : ''}">
-                        <div class="task-title">${task.name}</div>
-                        <div class="task-details">
-                            📅 ${new Date(task.date).toLocaleDateString('es-ES')} a las ${task.time}<br>
-                            🎯 Prioridad: ${priorityText}<br>
-                            ${task.description ? `📝 ${task.description}` : ''}
-                            ${isOverdue ? '<br>⚠️ <strong>Vencida</strong>' : ''}
-                        </div>
-                        <div class="task-actions">
-                            <button class="btn-small btn-complete" onclick="completeTask(${task.id})">
-                                ${task.completed ? '✅ Completada' : '✅ Completar'}
-                            </button>
-                            <button class="btn-small btn-delete" onclick="deleteTask(${task.id})">🗑️ Eliminar</button>
-                        </div>
-                    </div>
-                `;
-            }).join('');
-        }
-
-        // Completar tarea
-        function completeTask(taskId) {
-            const task = tasks.find(t => t.id === taskId);
-            if (task) {
-                task.completed = !task.completed;
-                saveTasks();
-                updateTaskDisplay();
-                updateStats();
-            }
-        }
-
-        // Eliminar tarea
-        function deleteTask(taskId) {
-            if (confirm('¿Estás seguro de que quieres eliminar esta actividad?')) {
-                tasks = tasks.filter(t => t.id !== taskId);
-                saveTasks();
-                updateTaskDisplay();
-                updateStats();
-                generateCalendar();
-            }
-        }
-
-        // Actualizar estadísticas
-        function updateStats() {
-            const today = new Date().toDateString();
-            const todayTasks = tasks.filter(task => {
-                const taskDate = new Date(task.date).toDateString();
-                return taskDate === today && !task.completed;
-            }).length;
-
-            document.getElementById('totalTasks').textContent = tasks.length;
-            document.getElementById('todayTasks').textContent = todayTasks;
-        }
-
-        // Generar calendario
-        function generateCalendar() {
-            const calendarGrid = document.getElementById('calendarGrid');
-            const now = new Date();
-            const firstDay = new Date(now.getFullYear(), now.getMonth(), 1);
-            const lastDay = new Date(now.getFullYear(), now.getMonth() + 1, 0);
-            const startDate = new Date(firstDay);
-            startDate.setDate(startDate.getDate() - firstDay.getDay());
-
-            let calendarHTML = '';
-            const today = now.toDateString();
-
-            for (let i = 0; i < 42; i++) {
-                const currentDate = new Date(startDate);
-                currentDate.setDate(startDate.getDate() + i);
-                
-                const dateString = currentDate.toISOString().split('T')[0];
-                const hasTasks = tasks.some(task => task.date === dateString);
-                const isToday = currentDate.toDateString() === today;
-                const isCurrentMonth = currentDate.getMonth() === now.getMonth();
-
-                calendarHTML += `
-                    <div class="calendar-day ${hasTasks ? 'has-tasks' : ''} ${isToday ? 'today' : ''} ${!isCurrentMonth ? 'other-month' : ''}" 
-                         onclick="showDayTasks('${dateString}')"
-                         title="${hasTasks ? 'Tienes actividades este día' : 'Sin actividades'}">
-                        ${currentDate.getDate()}
-                    </div>
-                `;
-            }
-
-            calendarGrid.innerHTML = calendarHTML;
-        }
-
-        // Mostrar tareas del día
-        function showDayTasks(dateString) {
-            const dayTasks = tasks.filter(task => task.date === dateString);
-            const formattedDate = new Date(dateString).toLocaleDateString('es-ES');
-            
-            if (dayTasks.length === 0) {
-                alert(`No tienes actividades para el ${formattedDate}`);
-                return;
-            }
-
-            const taskList = dayTasks.map(task => 
-                `• ${task.time} - ${task.name} ${task.completed ? '✅' : ''}`
-            ).join('\n');
-
-            alert(`Actividades para el ${formattedDate}:\n\n${taskList}`);
-        }
-
-        // Guardar tareas en localStorage
-        function saveTasks() {
-            localStorage.setItem('timeOrganizerTasks', JSON.stringify(tasks));
-        }
-
-        // Registrar Service Worker para PWA
-        if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register('data:application/javascript;base64,c2VsZi5hZGRFdmVudExpc3RlbmVyKCdpbnN0YWxsJywgZXZlbnQgPT4ge30pOw==');
-        }
-
-        // Agregar estilos para estados especiales
-        const additionalStyles = `
-            <style>
-                .task-item.completed {
-                    opacity: 0.6;
-                    background: linear-gradient(135deg, #10b981, #059669) !important;
-                }
-                
-                .task-item.overdue {
-                    background: linear-gradient(135deg, #ef4444, #dc2626) !important;
-                }
-                
-                .calendar-day.other-month {
-                    opacity: 0.3;
-                }
-            </style>
-        `;
-        document.head.insertAdjacentHTML('beforeend', additionalStyles);
-    </script>
-</body>
-</html>
+        // Mensajes de notificación personalizados
+        const notificationMessages = {
+            1: {
+                reminder: "💖 Hola cariño, en 15 minutos tienes: {task}",
+                urgent: "✨ ¡Es hora de brillar! Tu actividad '{task}' te está esperando",
+                motivational: ["¡Tú puedes hacerlo! 💪", "¡Eres increíble! ⭐", "¡A por ello! 🔥"]
+            },
+            2: {
+                reminder: "🌸 Recordatorio gentil: {task} en 15 minutitos",
+                urgent: "💫 ¡Momento perfecto! Es hora de: {task}",
+                motivational: ["¡Paso a paso! 🚀", "¡Lo tienes! 💎", "¡
